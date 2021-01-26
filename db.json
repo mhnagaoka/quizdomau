@@ -1,5 +1,5 @@
 {
-    "bg": "/empire.svg",
+    "bg": "https://quizdomau.mhnagaoka.vercel.app/empire.svg",
     "title": "Quiz do Mau",
     "description": "Teste os seus conhecimentos sobre o lado negro da Força",
     "questions": [
