@@ -44,6 +44,7 @@ Widget.Content = styled.div`
     margin-bottom: 0;
   }
   ul {
+    margin-top: 24px;
     list-style: none;
     padding: 0;
   }
