@@ -21,7 +21,6 @@ const QuizContainer = styled.div`
 export default function Home() {
   return (
     <>
-      <QuizHead title={db.title} description={db.description} imageUrl={db.bg} />
       <QuizBackground backgroundImage={db.bg}>
         <QuizContainer>
           <QuizLogo />
