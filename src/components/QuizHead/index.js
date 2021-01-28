@@ -1,4 +1,5 @@
-import Head from "next/head";
+import React from 'react'
+import Head from 'next/head'
 
 function QuizHead({ title, description, imageUrl }) {
   return (
@@ -19,7 +20,7 @@ function QuizHead({ title, description, imageUrl }) {
         rel="stylesheet"
       />
     </Head>
-  );
+  )
 }
 
-export default QuizHead;
+export default QuizHead

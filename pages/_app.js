@@ -1,6 +1,7 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import db from "../db.json";
-import QuizHead from "../src/components/QuizHead"
+import React from 'react'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import db from '../db.json'
+import QuizHead from '../src/components/QuizHead'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -24,9 +25,9 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
   }
-`;
+`
 
-const theme = db.theme;
+const { theme } = db
 
 export default function App({ Component, pageProps }) {
   return (
@@ -38,8 +39,9 @@ export default function App({ Component, pageProps }) {
       />
       <ThemeProvider theme={theme}>
         <GlobalStyle />
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...pageProps} />
       </ThemeProvider>
     </>
-  );
+  )
 }
