@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import React from 'react'
 import styled from 'styled-components'
-
 import db from '../db.json'
+import Footer from '../src/components/Footer'
+import GitHubCorner from '../src/components/GitHubCorner'
 import QuizBackground from '../src/components/QuizBackground'
+import QuizContainer from '../src/components/QuizContainer'
 import QuizLogo from '../src/components/QuizLogo'
 import Widget from '../src/components/Widget'
-import Footer from '../src/components/Footer'
-import QuizContainer from '../src/components/QuizContainer'
-import GitHubCorner from '../src/components/GitHubCorner'
 
 const QuestionImage = styled.img`
   max-width: 100%;
@@ -88,7 +87,7 @@ export default function QuizPage() {
                 })}
               </ul>
               <ConfirmButton
-                onClick={(evt) => {
+                onClick={() => {
                   router.push(`/quiz?name=${name}&q=${qNum + 1}`)
                 }}
                 colors={db.theme.colors}
