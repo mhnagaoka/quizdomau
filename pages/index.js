@@ -1,48 +1,18 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
 import { useRouter } from 'next/router'
-
+import React, { useState } from 'react'
 import db from '../db.json'
-import Widget from '../src/components/Widget'
-import QuizLogo from '../src/components/QuizLogo'
-import QuizBackground from '../src/components/QuizBackground'
 import Footer from '../src/components/Footer'
 import GitHubCorner from '../src/components/GitHubCorner'
+import PlayerButton from '../src/components/PlayerButton'
+import PlayerInput from '../src/components/PlayerInput'
+import QuizBackground from '../src/components/QuizBackground'
 import QuizContainer from '../src/components/QuizContainer'
-
-const PlayerInput = styled.input`
-  width: 100%;
-  height: 3em;
-  background-color: ${({colors}) => colors.mainBg};
-  border-radius: 3.5px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${({colors}) => colors.primary};
-  padding:  8px 16px;
-  color: ${({colors}) => colors.contrastText};
-  &:focus {
-    outline: none;
-  }
-`
-
-const PlayerButton = styled.button`
-  width: 100%;
-  height: 3em;
-  margin-top: 25px;
-  text-transform: uppercase;
-  font-family: Lato;
-  background-color: ${({colors}) => colors.secondary};
-  color: ${({colors}) => colors.contrastText};
-  border-radius: 4px;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-`
+import QuizLogo from '../src/components/QuizLogo'
+import Widget from '../src/components/Widget'
 
 export default function Home() {
   const router = useRouter()
-  const [ name, setName ] = useState('')
+  const [name, setName] = useState('')
 
   return (
     <>
@@ -66,9 +36,9 @@ export default function Home() {
                     setName(evt.target.value)
                   }}
                   placeholder="Seu nome"
-                  colors={db.theme.colors}
+                  value={name}
                 />
-                <PlayerButton type="submit" disabled={name.length === 0} colors={db.theme.colors}>
+                <PlayerButton type="submit" disabled={name.length === 0}>
                   Jogar
                 </PlayerButton>
               </form>
