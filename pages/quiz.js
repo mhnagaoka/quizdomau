@@ -51,6 +51,13 @@ function QuestionWidget({
   onConfirm,
 }) {
   const questionId = `question__${questionNumber}`
+  const [selectedOption, setSelectedOption] = useState('')
+
+  // Reseta a resposta selecionada sempre que mudar a pergunta
+  useEffect(() => {
+    setSelectedOption('')
+  }, [questionNumber])
+
   return (
     <Widget>
       <Widget.Header>
@@ -63,6 +70,9 @@ function QuestionWidget({
         <h3>{question.title}</h3>
         <p>{question.description}</p>
         <form
+          onChange={(evt) => {
+            setSelectedOption(evt.target.value)
+          }}
           onSubmit={(evt) => {
             evt.preventDefault()
             onConfirm(evt)
@@ -70,9 +80,22 @@ function QuestionWidget({
         >
           {question.alternatives.map((a, i) => {
             const alternativeId = `alternative__${i}`
+            const value = i.toString()
+            const checked = selectedOption === value
             return (
-              <Widget.Topic as="label" htmlFor={alternativeId}>
-                <input id={alternativeId} type="radio" name={questionId} />
+              <Widget.Topic
+                as="label"
+                htmlFor={alternativeId}
+                key={alternativeId}
+                checked={checked}
+              >
+                <input
+                  id={alternativeId}
+                  type="radio"
+                  name={questionId}
+                  value={value}
+                  checked={checked}
+                />
                 {a}
               </Widget.Topic>
             )
@@ -98,18 +121,27 @@ QuestionWidget.propTypes = {
   onConfirm: PropTypes.func.isRequired,
 }
 
-function ScoreWidget() {
+const FormattedName = styled.span`
+  text-transform: capitalize;
+`
+function ScoreWidget({ name }) {
   return (
     <Widget>
       <Widget.Header>
         <h2>Quiz concluído</h2>
       </Widget.Header>
       <Widget.Content>
-        <h3>Parabéns</h3>
+        <h3>
+          Parabéns, <FormattedName>{name}</FormattedName>
+        </h3>
         <p>Você acertou X questões</p>
       </Widget.Content>
     </Widget>
   )
+}
+
+ScoreWidget.propTypes = {
+  name: PropTypes.string.isRequired,
 }
 
 const screenStates = {
@@ -152,7 +184,7 @@ export default function QuizPage() {
               }}
             />
           )}
-          {screenState === screenStates.RESULT && <ScoreWidget />}
+          {screenState === screenStates.RESULT && <ScoreWidget name={name} />}
           <Footer />
           <GitHubCorner projectUrl="https://github.com/mhnagaoka/quizdomau" />
         </QuizContainer>
