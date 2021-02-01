@@ -4,20 +4,73 @@
   "description": "Teste os seus conhecimentos sobre o lado negro da Força",
   "questions": [
     {
-      "image": "https://media.giphy.com/media/xUOxf3yDKCuwpOlT3i/giphy.gif",
-      "title": "Como fazer um seletor por id via CSS?",
+      "image": "https://media.giphy.com/media/3ofSB4uhagGiWdSVbi/giphy.gif",
+      "title": "Que parte do corpo de Luke foi cortada por Darth Vader?",
       "description": "Essa é pra aquecer",
-      "answer": 2,
-      "alternatives": [".elemento", "*elemento", "#elemento", "%elemento"]
+      "answer": 3,
+      "alternatives": ["Mão esquerda", "Cabelo", "Unha", "Mão direita"]
     },
     {
-      "image": "https://media.giphy.com/media/13FrpeVH09Zrb2/giphy.gif",
-      "title": "Como fazer um background gradiente com css?",
+      "image": "https://media.giphy.com/media/xTiIzPWP6lRmOJ43qU/giphy.gif",
+      "title": "Que parte do corpo de Anakin foi cortada pelo Conde Dookan?",
       "description": "Faz tempo em haha",
+      "answer": 3,
+      "alternatives": ["Mão esquerda", "Cabelo", "Unha", "Mão direita"]
+    },
+    {
+      "image": "https://media.giphy.com/media/QoqDGvWcwJtLi/giphy.gif",
+      "title": "Quantos braços tem o General Grievous?",
+      "description": "Cof, cof, cof",
       "answer": 0,
+      "alternatives": ["Quatro", "Três", "Dois", "Seis"]
+    },
+    {
+      "image": "https://media.giphy.com/media/3o7abxX5p5SLHTtXG0/giphy.gif",
+      "title": "Em qual planeta Anakin Skywalker nasceu?",
+      "description": "Dica: não é plano",
+      "answer": 3,
+      "alternatives": ["Dagobah", "Naboo", "Alderaan", "Tatooine"]
+    },
+    {
+      "image": "https://pbs.twimg.com/media/EqWsHCLU0AE4UX4?format=jpg&name=small",
+      "title": "Onde fica a Tosche Station?",
+      "description": "Não é na Terra",
+      "answer": 3,
+      "alternatives": ["Dagobah", "Naboo", "Alderaan", "Tatooine"]
+    },
+    {
+      "image": "https://media.giphy.com/media/Lo6pnXzajahS6mehcQ/giphy.gif",
+      "title": "Qual o primeiro nome do Imperador Palpatine?",
+      "description": "Não começa com Jota",
+      "answer": 1,
+      "alternatives": ["Anakin", "Sheev", "Darth", "Sith"]
+    },
+    {
+      "image": "https://media.giphy.com/media/10rHZ6K9jYvLUc/giphy.gif",
+      "title": "Quantos filhos Anakin Skywalker teve?",
+      "answer": 2,
+      "alternatives": ["Nenhum", "Um", "Dois", "Três"]
+    },
+    {
+      "image": "https://media.giphy.com/media/xBAreNGk5DapO/giphy.gif",
+      "title": "Qual destas combinações está errada?",
+      "answer": 1,
       "alternatives": [
-        "background: linear-gradient(#e66465, #9198e5);",
-        "background: gradient(#e66465, #9198e5);"
+        "Imperador Palpatine / Darth Sidious",
+        "Savage Opress / Darth Maul",
+        "Conde Dookan / Darth Tyranus",
+        "Anakin Skywalker / Darth Vader"
+      ]
+    },
+    {
+      "image": "https://media.giphy.com/media/lHF5rbg9TYqDS/giphy.gif",
+      "title": "Qual o nome do fabricante dos TIE Fighters?",
+      "answer": 2,
+      "alternatives": [
+        "Incom Corporation",
+        "Corellian Engineering Corporation",
+        "Sienar Fleet Systems",
+        "Kuat Drive Yards"
       ]
     }
   ],
