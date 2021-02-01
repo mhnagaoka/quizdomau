@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import db from '../db.json'
 import Footer from '../src/components/Footer'
 import GitHubCorner from '../src/components/GitHubCorner'
+import PlayerButton from '../src/components/PlayerButton'
 import QuizBackground from '../src/components/QuizBackground'
 import QuizContainer from '../src/components/QuizContainer'
 import QuizLogo from '../src/components/QuizLogo'
@@ -13,22 +14,6 @@ import Widget from '../src/components/Widget'
 
 const QuestionImage = styled.img`
   max-width: 100%;
-`
-
-const ConfirmButton = styled.button`
-  width: 100%;
-  height: 3em;
-  text-transform: uppercase;
-  font-family: Lato;
-  padding-left: 15px;
-  background-color: ${({ colors }) => colors.primary};
-  color: ${({ colors }) => colors.contrastText};
-  border-radius: 4px;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  margin-bottom: 8px;
 `
 
 function LoadingWidget() {
@@ -100,9 +85,13 @@ function QuestionWidget({
               </Widget.Topic>
             )
           })}
-          <ConfirmButton type="submit" colors={db.theme.colors}>
+          <PlayerButton
+            type="submit"
+            colors={db.theme.colors}
+            disabled={selectedOption === ''}
+          >
             Confirmar
-          </ConfirmButton>
+          </PlayerButton>
         </form>
       </Widget.Content>
     </Widget>

@@ -67,6 +67,10 @@ Widget.Topic = styled.a`
   &:focus {
     opacity: 0.5;
   }
+
+  input {
+    display: none;
+  }
 `
 
 export default Widget
