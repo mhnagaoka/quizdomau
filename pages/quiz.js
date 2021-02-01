@@ -60,7 +60,7 @@ function QuestionWidget({
           }}
           onSubmit={(evt) => {
             evt.preventDefault()
-            onConfirm(evt)
+            onConfirm({ selectedOption }, evt)
           }}
         >
           {question.alternatives.map((a, i) => {
@@ -113,24 +113,59 @@ QuestionWidget.propTypes = {
 const FormattedName = styled.span`
   text-transform: capitalize;
 `
-function ScoreWidget({ name }) {
+function ScoreWidget({ name, correctAnswers, total }) {
   return (
     <Widget>
       <Widget.Header>
         <h2>Quiz concluído</h2>
       </Widget.Header>
-      <Widget.Content>
-        <h3>
-          Parabéns, <FormattedName>{name}</FormattedName>
-        </h3>
-        <p>Você acertou X questões</p>
-      </Widget.Content>
+      {correctAnswers === 0 && (
+        <Widget.Content>
+          <QuestionImage src="https://media.giphy.com/media/TJawtKM6OCKkvwCIqX/giphy.gif" />
+          <h3>
+            Que pena, <FormattedName>{name}</FormattedName>!
+          </h3>
+          <p>Você não acertou nenhuma resposta.</p>
+        </Widget.Content>
+      )}
+      {correctAnswers !== total && correctAnswers === 1 && (
+        <Widget.Content>
+          <QuestionImage src="https://media.giphy.com/media/qmfpjpAT2fJRK/giphy.gif" />
+          <h3>
+            <FormattedName>{name}</FormattedName>,
+          </h3>
+          <p>você acertou apenas uma resposta.</p>
+        </Widget.Content>
+      )}
+      {correctAnswers !== total && correctAnswers > 1 && (
+        <Widget.Content>
+          <QuestionImage src="https://media.giphy.com/media/9xijGdDIMovchalhxN/giphy.gif" />
+          <h3>
+            <FormattedName>{name}</FormattedName>,
+          </h3>
+          <p>Você acertou {correctAnswers} respostas.</p>
+        </Widget.Content>
+      )}
+      {correctAnswers === total && (
+        <Widget.Content>
+          <QuestionImage
+            src="https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif"
+            alt="Fogos de artifício"
+          />
+          <h3>
+            Parabéns, <FormattedName>{name}</FormattedName>!
+          </h3>
+          <p>Você acertou todas as {total} respostas!</p>
+        </Widget.Content>
+      )}
     </Widget>
   )
 }
 
 ScoreWidget.propTypes = {
   name: PropTypes.string.isRequired,
+  correctAnswers: PropTypes.string.isRequired,
+  total: PropTypes.number.isRequired,
 }
 
 const screenStates = {
@@ -139,11 +174,19 @@ const screenStates = {
   RESULT: 'RESULT',
 }
 
+function countCorrectAnswers(answers) {
+  const correctAnswers = db.questions.map((q) => q.answer.toString())
+  return correctAnswers.reduce((sum, correct, i) => {
+    return answers[i] === correct ? sum + 1 : sum
+  }, 0)
+}
+
 export default function QuizPage() {
   const [screenState, setScreenState] = useState(screenStates.LOADING)
   const router = useRouter()
   const { name } = router.query
   const [questionNumber, setQuestionNumber] = useState(1)
+  const [answers, setAnswers] = useState([])
   const question = db.questions[questionNumber - 1]
   const totalQuestions = db.questions.length
 
@@ -154,30 +197,37 @@ export default function QuizPage() {
   }, [])
 
   return (
-    <>
-      <QuizBackground backgroundImage={db.bg}>
-        <QuizContainer>
-          <QuizLogo />
-          {screenState === screenStates.LOADING && <LoadingWidget />}
-          {screenState === screenStates.QUIZ && (
-            <QuestionWidget
-              questionNumber={questionNumber}
-              totalQuestions={totalQuestions}
-              question={question}
-              onConfirm={() => {
-                if (questionNumber < totalQuestions) {
-                  setQuestionNumber(questionNumber + 1)
-                } else {
-                  setScreenState(screenStates.RESULT)
-                }
-              }}
-            />
-          )}
-          {screenState === screenStates.RESULT && <ScoreWidget name={name} />}
-          <Footer />
-          <GitHubCorner projectUrl="https://github.com/mhnagaoka/quizdomau" />
-        </QuizContainer>
-      </QuizBackground>
-    </>
+    <QuizBackground backgroundImage={db.bg}>
+      <QuizContainer>
+        <QuizLogo />
+        {screenState === screenStates.LOADING && <LoadingWidget />}
+        {screenState === screenStates.QUIZ && (
+          <QuestionWidget
+            questionNumber={questionNumber}
+            totalQuestions={totalQuestions}
+            question={question}
+            onConfirm={({ selectedOption }) => {
+              const newAnswers = [...answers]
+              newAnswers[questionNumber - 1] = selectedOption
+              setAnswers(newAnswers)
+              if (questionNumber < totalQuestions) {
+                setQuestionNumber(questionNumber + 1)
+              } else {
+                setScreenState(screenStates.RESULT)
+              }
+            }}
+          />
+        )}
+        {screenState === screenStates.RESULT && (
+          <ScoreWidget
+            name={name}
+            correctAnswers={countCorrectAnswers(answers)}
+            total={totalQuestions}
+          />
+        )}
+        <Footer />
+        <GitHubCorner projectUrl="https://github.com/mhnagaoka/quizdomau" />
+      </QuizContainer>
+    </QuizBackground>
   )
 }
