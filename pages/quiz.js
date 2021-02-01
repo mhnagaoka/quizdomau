@@ -121,7 +121,7 @@ function ScoreWidget({ name, correctAnswers, total }) {
       </Widget.Header>
       {correctAnswers === 0 && (
         <Widget.Content>
-          <QuestionImage src="https://media.giphy.com/media/TJawtKM6OCKkvwCIqX/giphy.gif" />
+          <QuestionImage src="https://media.giphy.com/media/Xjo8pbrphfVuw/giphy.gif" />
           <h3>
             Que pena, <FormattedName>{name}</FormattedName>!
           </h3>
@@ -130,28 +130,38 @@ function ScoreWidget({ name, correctAnswers, total }) {
       )}
       {correctAnswers !== total && correctAnswers === 1 && (
         <Widget.Content>
-          <QuestionImage src="https://media.giphy.com/media/qmfpjpAT2fJRK/giphy.gif" />
+          <QuestionImage src="https://media.giphy.com/media/sjCEbeXD4iSn6/giphy.gif" />
           <h3>
             <FormattedName>{name}</FormattedName>,
           </h3>
           <p>você acertou apenas uma resposta.</p>
         </Widget.Content>
       )}
-      {correctAnswers !== total && correctAnswers > 1 && (
-        <Widget.Content>
-          <QuestionImage src="https://media.giphy.com/media/9xijGdDIMovchalhxN/giphy.gif" />
-          <h3>
-            <FormattedName>{name}</FormattedName>,
-          </h3>
-          <p>Você acertou {correctAnswers} respostas.</p>
-        </Widget.Content>
-      )}
+      {correctAnswers !== total &&
+        correctAnswers > 1 &&
+        correctAnswers / total < 0.5 && (
+          <Widget.Content>
+            <QuestionImage src="https://media.giphy.com/media/cGwKtUn1hAk4E/giphy.gif" />
+            <h3>
+              <FormattedName>{name}</FormattedName>,
+            </h3>
+            <p>Você acertou {correctAnswers} respostas.</p>
+          </Widget.Content>
+        )}
+      {correctAnswers !== total &&
+        correctAnswers > 1 &&
+        correctAnswers / total >= 0.5 && (
+          <Widget.Content>
+            <QuestionImage src="https://media.giphy.com/media/3ornjSL2sBcPflIDiU/giphy.gif" />
+            <h3>
+              <FormattedName>{name}</FormattedName>,
+            </h3>
+            <p>Você acertou {correctAnswers} respostas.</p>
+          </Widget.Content>
+        )}
       {correctAnswers === total && (
         <Widget.Content>
-          <QuestionImage
-            src="https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif"
-            alt="Fogos de artifício"
-          />
+          <QuestionImage src="https://media.giphy.com/media/Ddab9zJPtaEmI/giphy.gif" />
           <h3>
             Parabéns, <FormattedName>{name}</FormattedName>!
           </h3>
