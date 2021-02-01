@@ -15,22 +15,6 @@ const QuestionImage = styled.img`
   max-width: 100%;
 `
 
-const AlternativeButton = styled.button`
-  width: 100%;
-  height: 3em;
-  text-align: left;
-  font-family: Lato;
-  padding-left: 15px;
-  background-color: ${({ colors }) => colors.secondary};
-  color: ${({ colors }) => colors.contrastText};
-  border-radius: 4px;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  margin-bottom: 8px;
-`
-
 const ConfirmButton = styled.button`
   width: 100%;
   height: 3em;
@@ -147,14 +131,6 @@ export default function QuizPage() {
       setScreenState(screenStates.QUIZ)
     }, 1000)
   }, [])
-
-  // Isso parece q não funciona direito. Dá pau quando recarrega a página.
-  //   useEffect(() => {
-  //     // Se não tem nome definido, volta p/ a tela inicial
-  //     if (!name) {
-  //       router.push('/')
-  //     }
-  //   })
 
   return (
     <>
