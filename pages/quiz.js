@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import db from '../db.json'
 import Footer from '../src/components/Footer'
@@ -169,7 +169,12 @@ function QuestionWidget({
         <QuestionImage src={question.image} alt={question.title} />
         <h3>{question.title}</h3>
         <p>{question.description}</p>
-        <form>
+        <form
+          onSubmit={(evt) => {
+            evt.preventDefault()
+            onConfirm(evt)
+          }}
+        >
           {question.alternatives.map((a, i) => {
             const alternativeId = `alternative__${i}`
             return (
@@ -179,10 +184,10 @@ function QuestionWidget({
               </Widget.Topic>
             )
           })}
+          <ConfirmButton type="submit" colors={db.theme.colors}>
+            Confirmar
+          </ConfirmButton>
         </form>
-        <ConfirmButton onClick={onConfirm} colors={db.theme.colors}>
-          Confirmar
-        </ConfirmButton>
       </Widget.Content>
     </Widget>
   )
@@ -200,12 +205,39 @@ QuestionWidget.propTypes = {
   onConfirm: PropTypes.func.isRequired,
 }
 
+function ScoreWidget() {
+  return (
+    <Widget>
+      <Widget.Header>
+        <h2>Quiz concluído</h2>
+      </Widget.Header>
+      <Widget.Content>
+        <h3>Parabéns</h3>
+        <p>Você acertou X questões</p>
+      </Widget.Content>
+    </Widget>
+  )
+}
+
+const screenStates = {
+  LOADING: 'LOADING',
+  QUIZ: 'QUIZ',
+  RESULT: 'RESULT',
+}
+
 export default function QuizPage() {
+  const [screenState, setScreenState] = useState(screenStates.LOADING)
   const router = useRouter()
-  const { name, q = 1 } = router.query
-  const questionNumber = parseInt(q, 10)
+  const { name } = router.query
+  const [questionNumber, setQuestionNumber] = useState(1)
   const question = db.questions[questionNumber - 1]
   const totalQuestions = db.questions.length
+
+  useEffect(() => {
+    setTimeout(() => {
+      setScreenState(screenStates.QUIZ)
+    }, 1000)
+  }, [])
 
   // Isso parece q não funciona direito. Dá pau quando recarrega a página.
   //   useEffect(() => {
@@ -220,15 +252,22 @@ export default function QuizPage() {
       <QuizBackground backgroundImage={db.bg}>
         <QuizContainer>
           <QuizLogo />
-          <LoadingWidget />
-          <QuestionWidget
-            questionNumber={questionNumber}
-            totalQuestions={totalQuestions}
-            question={question}
-            onConfirm={() => {
-              router.push(`/quiz?name=${name}&q=${questionNumber + 1}`)
-            }}
-          />
+          {screenState === screenStates.LOADING && <LoadingWidget />}
+          {screenState === screenStates.QUIZ && (
+            <QuestionWidget
+              questionNumber={questionNumber}
+              totalQuestions={totalQuestions}
+              question={question}
+              onConfirm={() => {
+                if (questionNumber < totalQuestions) {
+                  setQuestionNumber(questionNumber + 1)
+                } else {
+                  setScreenState(screenStates.RESULT)
+                }
+              }}
+            />
+          )}
+          {screenState === screenStates.RESULT && <ScoreWidget />}
           <Footer />
           <GitHubCorner projectUrl="https://github.com/mhnagaoka/quizdomau" />
         </QuizContainer>
