@@ -113,59 +113,85 @@ QuestionWidget.propTypes = {
 const FormattedName = styled.span`
   text-transform: capitalize;
 `
-function ScoreWidget({ name, correctAnswers, total }) {
+
+const correctAnswers = db.questions.map((q) => q.answer.toString())
+
+function countCorrectAnswers(answers) {
+  return answers.filter((answer, i) => answer === correctAnswers[i]).length
+}
+
+function AnswerDetails({ answers }) {
+  return (
+    <ul>
+      {answers.map((answer, i) => (
+        <li>
+          <div>{i + 1}</div>
+          <div>{answer === correctAnswers[i] ? '✓' : '✗'}</div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+AnswerDetails.propTypes = {
+  answers: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
+
+function ScoreWidget({ name, answers, total }) {
+  const score = countCorrectAnswers(answers)
   return (
     <Widget>
       <Widget.Header>
         <h2>Quiz concluído</h2>
       </Widget.Header>
-      {correctAnswers === 0 && (
+      {score === 0 && (
         <Widget.Content>
           <QuestionImage src="https://media.giphy.com/media/Xjo8pbrphfVuw/giphy.gif" />
           <h3>
             Que pena, <FormattedName>{name}</FormattedName>!
           </h3>
           <p>Você não acertou nenhuma resposta.</p>
+          <AnswerDetails answers={answers} />
         </Widget.Content>
       )}
-      {correctAnswers !== total && correctAnswers === 1 && (
+      {score !== total && score === 1 && (
         <Widget.Content>
           <QuestionImage src="https://media.giphy.com/media/sjCEbeXD4iSn6/giphy.gif" />
           <h3>
             <FormattedName>{name}</FormattedName>,
           </h3>
           <p>você acertou apenas uma resposta.</p>
+          <AnswerDetails answers={answers} />
         </Widget.Content>
       )}
-      {correctAnswers !== total &&
-        correctAnswers > 1 &&
-        correctAnswers / total < 0.5 && (
-          <Widget.Content>
-            <QuestionImage src="https://media.giphy.com/media/cGwKtUn1hAk4E/giphy.gif" />
-            <h3>
-              <FormattedName>{name}</FormattedName>,
-            </h3>
-            <p>Você acertou {correctAnswers} respostas.</p>
-          </Widget.Content>
-        )}
-      {correctAnswers !== total &&
-        correctAnswers > 1 &&
-        correctAnswers / total >= 0.5 && (
-          <Widget.Content>
-            <QuestionImage src="https://media.giphy.com/media/3ornjSL2sBcPflIDiU/giphy.gif" />
-            <h3>
-              <FormattedName>{name}</FormattedName>,
-            </h3>
-            <p>Você acertou {correctAnswers} respostas.</p>
-          </Widget.Content>
-        )}
-      {correctAnswers === total && (
+      {score !== total && score > 1 && score / total < 0.5 && (
+        <Widget.Content>
+          <QuestionImage src="https://media.giphy.com/media/cGwKtUn1hAk4E/giphy.gif" />
+          <h3>
+            <FormattedName>{name}</FormattedName>,
+          </h3>
+          <p>Você acertou {score} respostas.</p>
+          <AnswerDetails answers={answers} />
+        </Widget.Content>
+      )}
+      {score !== total && score > 1 && score / total >= 0.5 && (
+        <Widget.Content>
+          <QuestionImage src="https://media.giphy.com/media/3ornjSL2sBcPflIDiU/giphy.gif" />
+          <h3>
+            <FormattedName>{name}</FormattedName>,
+          </h3>
+          <p>Você acertou {score} respostas.</p>
+          <AnswerDetails answers={answers} />
+        </Widget.Content>
+      )}
+      {score === total && (
         <Widget.Content>
           <QuestionImage src="https://media.giphy.com/media/Ddab9zJPtaEmI/giphy.gif" />
           <h3>
             Parabéns, <FormattedName>{name}</FormattedName>!
           </h3>
           <p>Você acertou todas as {total} respostas!</p>
+          <AnswerDetails answers={answers} />
         </Widget.Content>
       )}
     </Widget>
@@ -174,7 +200,7 @@ function ScoreWidget({ name, correctAnswers, total }) {
 
 ScoreWidget.propTypes = {
   name: PropTypes.string.isRequired,
-  correctAnswers: PropTypes.string.isRequired,
+  answers: PropTypes.arrayOf(PropTypes.string).isRequired,
   total: PropTypes.number.isRequired,
 }
 
@@ -182,13 +208,6 @@ const screenStates = {
   LOADING: 'LOADING',
   QUIZ: 'QUIZ',
   RESULT: 'RESULT',
-}
-
-function countCorrectAnswers(answers) {
-  const correctAnswers = db.questions.map((q) => q.answer.toString())
-  return correctAnswers.reduce((sum, correct, i) => {
-    return answers[i] === correct ? sum + 1 : sum
-  }, 0)
 }
 
 export default function QuizPage() {
@@ -229,11 +248,7 @@ export default function QuizPage() {
           />
         )}
         {screenState === screenStates.RESULT && (
-          <ScoreWidget
-            name={name}
-            correctAnswers={countCorrectAnswers(answers)}
-            total={totalQuestions}
-          />
+          <ScoreWidget name={name} answers={answers} total={totalQuestions} />
         )}
         <Footer />
         <GitHubCorner projectUrl="https://github.com/mhnagaoka/quizdomau" />

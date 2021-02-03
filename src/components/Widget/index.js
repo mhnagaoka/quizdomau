@@ -16,7 +16,11 @@ const Widget = styled.div`
     line-height: 1;
     margin-bottom: 0;
   }
-  p {
+  img {
+    width: 100%;
+  }
+  p,
+  ul {
     font-size: 14px;
     font-weight: 400;
     line-height: 1;
@@ -47,6 +51,18 @@ Widget.Content = styled.div`
     margin-top: 24px;
     list-style: none;
     padding: 0;
+    display: table;
+    width: 100%;
+    li {
+      display: table-row;
+      justify-content: space-evenly;
+      margin: 0 10px;
+      div {
+        display: table-cell;
+        width: 50%;
+        text-align: center;
+      }
+    }
   }
 `
 
